@@ -6,7 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     user: null,
-    auth: false
+    auth: false,
+    loading: 0
   },
   mutations: {
     SET_USER(state, user) {
@@ -37,6 +38,19 @@ export default new Vuex.Store({
         .catch(() => {
           commit("SET_USER", null);
         });
+    },
+    loadingShow(){
+      this._vm.$q.loading.show();
+      if(isNaN(this.loading)){
+        this.loading = 0;
+      }
+      this.loading++;
+    },
+    loadingHide(){
+      this.loading--;
+      if(this.loading === 0) {
+        this._vm.$q.loading.hide();
+      }
     }
   },
   modules: {}

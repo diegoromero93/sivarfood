@@ -11,7 +11,6 @@ export default {
   },
   methods: {
     async getCSRFCookie() {
-      console.log("getting CSRFCookie")
       await this.$store
         .dispatch("getCSRFCookie");
     }

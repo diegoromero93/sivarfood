@@ -20,4 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/cuisine-types', 'CuisineTypeContoller@index');
-Route::get('/test', 'HomeChefController@index');
+Route::get('/chefs', 'HomeChefController@index');
