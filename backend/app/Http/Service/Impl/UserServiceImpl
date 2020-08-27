@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Http\Service\Impl;
+
+use App\Http\Service\UserService;
+use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+class UserServiceImpl implements UserService
+{
+    public function save(Request $request){
+        $validatedData = validator($request);
+        if($validatedData->fails()){
+            return response($validatedData, 400);
+        } else {
+            $user = User::create($request);
+            return response($user, 200);
+        }
+
+    }
+
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    private function validator(Request $request)
+    {
+        return Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+    }
+}

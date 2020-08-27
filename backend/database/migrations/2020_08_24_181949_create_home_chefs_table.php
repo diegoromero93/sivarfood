@@ -22,6 +22,10 @@ class CreateHomeChefsTable extends Migration
             $table->string('header_image');
             $table->string('address');
             $table->boolean('show_address');
+            $table->string('instagram_url')->nullable();
+            $table->string('facebook_url')->nullable();
+            $table->string('website_url')->nullable();
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

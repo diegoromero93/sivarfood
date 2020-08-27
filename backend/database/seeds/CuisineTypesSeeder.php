@@ -20,7 +20,7 @@ class CuisineTypesSeeder extends Seeder
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
-                'name' => 'India',
+                'name' => 'Indian',
                 'description' => 'India',
                 'favicon' => null,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s')

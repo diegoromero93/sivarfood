@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use \App\Http\Models\HomeChef;
+use App\Http\Service\HomeChefService;
 use Illuminate\Http\Request;
 
 class HomeChefController extends Controller
 {
-    public function index(Request $request){
-        $homeChefs = HomeChef::with('cuisineTypes')
-            ->where('active', true)
-            ->paginate(15);
-        return response($homeChefs, 200);
+    private $homeChefService;
+
+    public function __construct(HomeChefService $homeChefService)
+    {
+        $this->homeChefService = $homeChefService;
+    }
+
+    public function index(Request $request)
+    {
+        return $this->homeChefService->get($request);
     }
 }
