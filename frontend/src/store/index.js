@@ -17,20 +17,20 @@ export default new Vuex.Store({
   },
   actions: {
     async login({ dispatch }, form) {
-      await this.$axios.post("/login", form).then(response => {
+      await this._vm.$axios.post("/login", form).then(response => {
         this.user = response.data;
       });
       dispatch("getUser");
     },
     async logout({ dispatch }) {
-      await this.$axios.post("/logout");
+      await this._vm.$axios.post("/logout");
       dispatch("getUser");
     },
     async getCSRFCookie() {
       await this._vm.$axios.get("/sanctum/csrf-cookie");
     },
     getUser({ commit }) {
-      this.$axios
+      this._vm.$axios
         .get("/api/user")
         .then(res => {
           commit("SET_USER", res.data);

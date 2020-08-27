@@ -1,11 +1,13 @@
 <template>
   <q-page >
     <div class="q-pa-md row justify-center">
-      <q-input v-model="text" filled  :max-height="500" label="Bucar por nombre">
-        <template v-slot:prepend>
-          <q-icon name="search" />
-        </template>
-      </q-input>
+      <div class="col-4">
+        <q-input v-model="homechefName" @keyup.enter="filter" filled  :max-height="500" label="Bucar por nombre">
+          <template v-slot:prepend>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </div>
     </div>
     <div class="q-pa-md row justify-center scrolling-wrapper">
       <q-chip v-for="type in cuisineTypes"
@@ -14,13 +16,13 @@
               :selected.sync="type.selected"
               :color="type.selected ? 'primary' : '' "
               :text-color="type.selected ? 'white' : ''"
-              clickable @click="getChefs()">
+              clickable @click="filter">
         {{ type.name }}
       </q-chip>
     </div>
-    <q-infinite-scroll @load="onLoad" :offset="250">
-      <div class="q-pa-md row items-start q-gutter-sm justify-center" >
-        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-12 q-pa-md caption"  v-for="item in homeChefs"  :key="'homeChef_' + item.id">
+    <q-infinite-scroll @load="onLoad" scroll-target="#home-chefs-container" :offset="500">
+      <div class="q-pa-md row items-start q-gutter-sm justify-center">
+        <div id="home-chefs-container" class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-12 q-pa-md caption"  v-for="item in homeChefs"  :key="'homeChef_' + item.id">
           <q-card class="my-card">
             <q-img :src="item.header_image" />
             <q-separator />
@@ -72,6 +74,7 @@ export default {
   data: () => ({
     cuisineTypes: [],
     homeChefs: [],
+    homechefName: null,
     text: null,
     stars: 5,
     pagination: {
@@ -99,15 +102,24 @@ export default {
      async getChefs() {
       if(this.chefsUrl != null){
         this.$store.dispatch("loadingShow");
-        await this.$axios.get(this.chefsUrl, {params: {"cuisine_types": this.selectedCuisineTypes}}).then(res =>{
+        await this.$axios.get(this.chefsUrl, {params: this.searchParams}).then(res =>{
           this.pagination.firstPage = false;
-          this.homeChefs = this.homeChefs .concat(res.data.data);
+          console.log(res);
+          this.homeChefs = this.homeChefs.concat(res.data.data);
+          console.log(this.homeChefs);
           this.pagination.nextPage = res.data.next_page_url;
           this.$store.dispatch("loadingHide");
         });
       }
     },
+    filter(){
+      this.homeChefs = [];
+      this.pagination.firstPage = true;
+      this.pagination.nextPage = null;
+      this.getChefs();
+    },
     onLoad (index, done) {
+       console.log("onload");
        if(!this.pagination.firstPage){
          this.getChefs();
        }
@@ -121,14 +133,14 @@ export default {
     this.getChefs();
   },
   computed: {
-    selectedCuisineTypes: function (){
+    searchParams: function (){
       let selectedCuisineTypes = [];
       this.cuisineTypes.forEach(function (element){
         if(element.selected){
           selectedCuisineTypes.push(element.id);
         }
       })
-      return selectedCuisineTypes;
+      return {"cuisine_types": selectedCuisineTypes, "homechef_name" : this.homechefName};
     },
     chefsUrl: function (){
       return this.pagination.firstPage ? "api/chefs" : this.pagination.nextPage;

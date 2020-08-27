@@ -15,10 +15,12 @@ class HomeChefServiceImpl implements HomeChefService
         $homeChefs = HomeChef::where('active', true);
         if($request->has('cuisine_types')){
             $homeChefs->whereHas('cuisineTypes', function (Builder $query) use ($request) {
-                $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-                $output->writeln($request->cuisine_types);
                 $query->whereIn('cuisine_type_id', $request->cuisine_types);
             });
+        }
+
+        if($request->has('homechef_name')){
+            $homeChefs->where('name','ilike' , '%' . $request->homechef_name . '%');
         }
 
         return response($homeChefs->with('cuisineTypes')->paginate(15), 200);
