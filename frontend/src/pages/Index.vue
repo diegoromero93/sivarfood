@@ -1,25 +1,29 @@
 <template>
   <q-page >
-    <div class="q-pa-md row justify-center">
-      <div class="col-4">
-        <q-input v-model="homechefName" @keyup.enter="filter" filled  :max-height="500" label="Bucar por nombre">
-          <template v-slot:prepend>
-            <q-icon name="search" />
-          </template>
-        </q-input>
+
+    <div class="search-container">
+      <div class="q-pa-md row justify-center">
+        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-12">
+          <q-input class="bg-white rounded-borders" v-model="homechefName" @keyup.enter="filter" filled  :max-height="500" label="Bucar por nombre">
+            <template v-slot:prepend>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </div>
+      </div>
+      <div class="q-pa-md row justify-center scrolling-wrapper">
+        <q-chip v-for="type in cuisineTypes"
+                :key="type.id"
+                :class="type.selected ? 'card' : 'card bg-white'"
+                :selected.sync="type.selected"
+                :color="type.selected ? 'primary' : '' "
+                :text-color="type.selected ? 'white' : ''"
+                clickable @click="filter">
+          {{ type.name }}
+        </q-chip>
       </div>
     </div>
-    <div class="q-pa-md row justify-center scrolling-wrapper">
-      <q-chip v-for="type in cuisineTypes"
-              :key="type.id"
-              class="card"
-              :selected.sync="type.selected"
-              :color="type.selected ? 'primary' : '' "
-              :text-color="type.selected ? 'white' : ''"
-              clickable @click="filter">
-        {{ type.name }}
-      </q-chip>
-    </div>
+
     <q-infinite-scroll @load="onLoad" ref="infiniteScroll" scroll-target="#home-chefs-container" :offset="500">
       <div class="q-pa-md row items-start q-gutter-sm justify-center">
         <div id="home-chefs-container" class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-12 q-pa-md caption"  v-for="item in homeChefs"  :key="'homeChef_' + item.id">
@@ -71,6 +75,7 @@
         </div>
       </template>
     </q-infinite-scroll>
+
   </q-page>
 </template>
 <script>
@@ -80,6 +85,7 @@ export default {
     cuisineTypes: [],
     homeChefs: [],
     homechefName: null,
+    image: 'img/sivarfood.jpg',
     text: null,
     stars: 5,
     pagination: {
@@ -164,6 +170,18 @@ export default {
   max-width: 300px;
   margin: auto;
   width: 100%;
+}
+
+.search-container{
+  background: url('../assets/sivarfood1.jpg');
+  z-index: 10;
+  position: relative;
+  transform: scale(1);
+  transition: all 150ms cubic-bezier(0.25, -0.5, 0.75, 1.5);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 0 35%;
+  opacity: 0.9;
 }
 
 
