@@ -100,17 +100,15 @@ export default {
       window.open(url, "_blank");
     },
      async getChefs() {
-      if(this.chefsUrl != null){
-        this.$store.dispatch("loadingShow");
-        await this.$axios.get(this.chefsUrl, {params: this.searchParams}).then(res =>{
-          this.pagination.firstPage = false;
-          console.log(res);
-          this.homeChefs = this.homeChefs.concat(res.data.data);
-          console.log(this.homeChefs);
-          this.pagination.nextPage = res.data.next_page_url;
-          this.$store.dispatch("loadingHide");
-        });
-      }
+      this.$store.dispatch("loadingShow");
+      await this.$axios.get(this.chefsUrl, {params: this.searchParams}).then(res =>{
+        this.pagination.firstPage = false;
+        console.log(res);
+        this.homeChefs = this.homeChefs.concat(res.data.data);
+        console.log(this.homeChefs);
+        this.pagination.nextPage = res.data.next_page_url;
+        this.$store.dispatch("loadingHide");
+      });
     },
     filter(){
       this.homeChefs = [];
@@ -120,7 +118,7 @@ export default {
     },
     onLoad (index, done) {
        console.log("onload");
-       if(!this.pagination.firstPage){
+       if(this.pagination.firstPage === false && this.chefsUrl != null){
          this.getChefs();
        }
       setTimeout(() => {
