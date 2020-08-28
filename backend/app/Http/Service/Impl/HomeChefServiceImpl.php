@@ -23,6 +23,6 @@ class HomeChefServiceImpl implements HomeChefService
             $homeChefs->where('name','ilike' , '%' . $request->homechef_name . '%');
         }
 
-        return response($homeChefs->with('cuisineTypes')->paginate(15), 200);
+        return response($homeChefs->with('cuisineTypes')->paginate(10), 200);
     }
 }

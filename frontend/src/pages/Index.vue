@@ -20,7 +20,7 @@
         {{ type.name }}
       </q-chip>
     </div>
-    <q-infinite-scroll @load="onLoad" scroll-target="#home-chefs-container" :offset="500">
+    <q-infinite-scroll @load="onLoad" ref="infiniteScroll" scroll-target="#home-chefs-container" :offset="500">
       <div class="q-pa-md row items-start q-gutter-sm justify-center">
         <div id="home-chefs-container" class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-12 q-pa-md caption"  v-for="item in homeChefs"  :key="'homeChef_' + item.id">
           <q-card class="my-card">
@@ -65,6 +65,11 @@
           </q-card>
         </div>
       </div>
+      <template v-slot:loading>
+        <div class="row justify-center q-my-md">
+          <q-spinner-dots color="primary" size="40px" />
+        </div>
+      </template>
     </q-infinite-scroll>
   </q-page>
 </template>
@@ -100,35 +105,33 @@ export default {
       window.open(url, "_blank");
     },
      async getChefs() {
-      this.$store.dispatch("loadingShow");
       await this.$axios.get(this.chefsUrl, {params: this.searchParams}).then(res =>{
         this.pagination.firstPage = false;
-        console.log(res);
-        this.homeChefs = this.homeChefs.concat(res.data.data);
-        console.log(this.homeChefs);
+        res.data.data.forEach(element => this.homeChefs.push(element));
         this.pagination.nextPage = res.data.next_page_url;
-        this.$store.dispatch("loadingHide");
       });
     },
     filter(){
       this.homeChefs = [];
       this.pagination.firstPage = true;
       this.pagination.nextPage = null;
-      this.getChefs();
+      this.$refs.infiniteScroll.reset();
+      // for some reason timemout needed
+      setTimeout(()=>{
+        this.$refs.infiniteScroll.resume();
+      }, 10);
     },
-    onLoad (index, done) {
-       console.log("onload");
-       if(this.pagination.firstPage === false && this.chefsUrl != null){
-         this.getChefs();
+    async onLoad(index, done) {
+       if(this.chefsUrl != null){
+         await this.getChefs();
+         done();
+       } else {
+         this.$refs.infiniteScroll.stop();
        }
-      setTimeout(() => {
-        done()
-      }, 3000);
     }
   },
   async created() {
     this.getCuisineTypes();
-    this.getChefs();
   },
   computed: {
     searchParams: function (){
