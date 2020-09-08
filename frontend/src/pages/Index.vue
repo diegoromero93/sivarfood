@@ -1,8 +1,8 @@
 <template>
   <q-page >
+    <carousel></carousel>
 
-    <div class="search-container">
-      <div class="q-pa-md row justify-center">
+      <!--<div class="q-pa-md row justify-center">
         <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-12">
           <q-input class="bg-white rounded-borders" v-model="homechefName" @keyup.enter="filter" filled  :max-height="500" label="Bucar por nombre">
             <template v-slot:prepend>
@@ -10,11 +10,12 @@
             </template>
           </q-input>
         </div>
-      </div>
+      </div>-->
       <div class="q-pa-md row justify-center scrolling-wrapper">
         <q-chip v-for="type in cuisineTypes"
+                style="padding: 1.2em"
                 :key="type.id"
-                :class="type.selected ? 'card' : 'card bg-white'"
+                :class="type.selected ? 'card ' : 'card bg-grey-3 text-weight-bold'"
                 :selected.sync="type.selected"
                 :color="type.selected ? 'primary' : '' "
                 :text-color="type.selected ? 'white' : ''"
@@ -22,11 +23,11 @@
           {{ type.name }}
         </q-chip>
       </div>
-    </div>
+
 
     <q-infinite-scroll @load="onLoad" ref="infiniteScroll" scroll-target="#home-chefs-container" :offset="500">
-      <div class="q-pa-md row items-start q-gutter-sm justify-center">
-        <div id="home-chefs-container" class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-12 q-pa-md caption"  v-for="item in homeChefs"  :key="'homeChef_' + item.id">
+      <div class="q-pa-md row q-gutter-sm justify-center" id="home-chefs-container" >
+        <div  class="items-start col-xl-3 col-lg-3 col-md-4 col-sm-5 col-xs-12 q-pa-md caption" v-for="item in homeChefs"  :key="'homeChef_' + item.id">
           <q-card class="my-card">
             <q-img :src="item.header_image" />
             <q-separator />
@@ -79,8 +80,10 @@
   </q-page>
 </template>
 <script>
+import Carousel from "components/Carousel";
 export default {
   name: "PageIndex",
+  components: {Carousel},
   data: () => ({
     cuisineTypes: [],
     homeChefs: [],
@@ -88,10 +91,12 @@ export default {
     image: 'img/sivarfood.jpg',
     text: null,
     stars: 5,
+    location:null,
+    gettingLocation: false,
     pagination: {
       firstPage: true,
-      nextPage: null
-    }
+      nextPage: null,
+    },
   }),
   methods: {
      async getCuisineTypes() {
@@ -112,6 +117,7 @@ export default {
     },
      async getChefs() {
       await this.$axios.get(this.chefsUrl, {params: this.searchParams}).then(res =>{
+        this.$store.dispatch("loadingHide");
         this.pagination.firstPage = false;
         res.data.data.forEach(element => this.homeChefs.push(element));
         this.pagination.nextPage = res.data.next_page_url;
@@ -123,7 +129,8 @@ export default {
       this.pagination.nextPage = null;
       this.$refs.infiniteScroll.reset();
       // for some reason timemout needed
-      setTimeout(()=>{
+      setTimeout(()=> {
+        this.$store.dispatch("loadingShow");
         this.$refs.infiniteScroll.resume();
       }, 10);
     },
@@ -138,6 +145,22 @@ export default {
   },
   async created() {
     this.getCuisineTypes();
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        console.log(position.coords.latitude + "," + position.coords.longitude);
+      });
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        console.log(position.coords.latitude);
+        console.log(position.coords.longitude);
+      },
+      error => {
+        console.log(error.message);
+      },
+    )
   },
   computed: {
     searchParams: function (){
@@ -156,12 +179,6 @@ export default {
 }
 </script>
 <style>
-.scrolling-wrapper {
-  overflow-x: scroll;
-  overflow-y: hidden;
-  white-space: nowrap;
-  height: 90px;
-}
 .card {
   display: inline-block;
 }
@@ -170,18 +187,6 @@ export default {
   max-width: 300px;
   margin: auto;
   width: 100%;
-}
-
-.search-container{
-  background: url('../assets/sivarfood1.jpg');
-  z-index: 10;
-  position: relative;
-  transform: scale(1);
-  transition: all 150ms cubic-bezier(0.25, -0.5, 0.75, 1.5);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: 0 35%;
-  opacity: 0.9;
 }
 
 

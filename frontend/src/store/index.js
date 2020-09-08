@@ -48,7 +48,8 @@ export default new Vuex.Store({
     },
     loadingHide(){
       this.loading--;
-      if(this.loading === 0) {
+      if(this.loading <= 0) {
+        this.loading = 0;
         this._vm.$q.loading.hide();
       }
     }
