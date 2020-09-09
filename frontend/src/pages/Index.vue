@@ -145,22 +145,6 @@ export default {
   },
   async created() {
     this.getCuisineTypes();
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        console.log(position.coords.latitude + "," + position.coords.longitude);
-      });
-    } else {
-      alert("Geolocation is not supported by this browser.");
-    }
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        console.log(position.coords.latitude);
-        console.log(position.coords.longitude);
-      },
-      error => {
-        console.log(error.message);
-      },
-    )
   },
   computed: {
     searchParams: function (){
