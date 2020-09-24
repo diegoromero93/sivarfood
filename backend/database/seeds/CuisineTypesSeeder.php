@@ -14,33 +14,45 @@ class CuisineTypesSeeder extends Seeder
     {
         DB::table('cuisine_types')->insert([
             [
-                'name' => 'Italiana',
-                'description' => 'Italiana',
-                'favicon' => null,
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ],
-            [
-                'name' => 'Indian',
-                'description' => 'India',
-                'favicon' => null,
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ],
-            [
-                'name' => 'Mexicana',
-                'description' => 'Mexicana',
-                'favicon' => null,
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ],
-            [
-                'name' => 'China',
-                'description' => 'China',
-                'favicon' => null,
+                'name' => 'Pizza',
+                'description' => 'La mejor pizza artesanal',
+                'favicon' => 'icon-food_icon_pizza',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
                 'name' => 'Sushi',
-                'description' => 'Sushi',
-                'favicon' => null,
+                'description' => 'El mejor sushi artesanal de sivar',
+                'favicon' => 'icon-food_icon_sushi',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+            [
+                'name' => 'Hamburguesas',
+                'description' => 'Mexicana',
+                'favicon' => 'icon-food_icon_burgher',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+            [
+                'name' => 'Vegetariana',
+                'description' => 'icon-food_icon_vegetarian',
+                'favicon' => 'icon-food_icon_vegetarian',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+            [
+                'name' => 'Postres',
+                'description' => 'Postres',
+                'favicon' => 'icon-food_icon_cake_2',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+            [
+                'name' => 'China',
+                'description' => '',
+                'favicon' => 'icon-food_icon_chinese',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+            [
+                'name' => 'Mexicana',
+                'description' => '',
+                'favicon' => 'icon-food_icon_burrito',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]
         ]);

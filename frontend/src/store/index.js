@@ -7,13 +7,20 @@ export default new Vuex.Store({
   state: {
     user: null,
     auth: false,
-    loading: 0
+    loading: 0,
+    location: {
+      lat: 1234,
+      lng: 1234
+    },
   },
   mutations: {
     SET_USER(state, user) {
       state.user = user;
       state.auth = Boolean(user);
-    }
+    },
+    SET_LOCATION(state, location) {
+      state.location = location;
+    },
   },
   actions: {
     async login({ dispatch }, form) {

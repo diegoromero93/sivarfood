@@ -1,16 +1,7 @@
 <template>
-  <q-page >
+  <q-page>
     <carousel></carousel>
 
-      <!--<div class="q-pa-md row justify-center">
-        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-4 col-xs-12">
-          <q-input class="bg-white rounded-borders" v-model="homechefName" @keyup.enter="filter" filled  :max-height="500" label="Bucar por nombre">
-            <template v-slot:prepend>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-        </div>
-      </div>-->
       <div class="q-pa-md row justify-center scrolling-wrapper">
         <q-chip v-for="type in cuisineTypes"
                 style="padding: 1.2em"

@@ -14,6 +14,23 @@ class CuisineTypeResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        /*
+         *
+            created_at: "2020-09-16T23:39:29.000000Z"
+            description: "La mejor pizza artesanal"
+            favicon: "icon-food_icon_pizza"
+            id: 1
+            name: "Pizza"
+            updated_at: null
+        */
+        return [
+            'created_at' => $this->created_at,
+            'description' => $this->description,
+            'favicon' => $this->favicon,
+            'id' => $this->id,
+            'name' => $this->name,
+            'updated_at' => $this->updated_at,
+            'homechefs_count' => $this->homeChefs()->count()
+        ];
     }
 }

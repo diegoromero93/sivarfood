@@ -10,7 +10,7 @@
       navigation
       padding
       arrows
-      height="190px"
+      height="25vh"
       class="bg-blue-1 text-black"
     >
       <q-carousel-slide name="style" class="column no-wrap flex-center">
@@ -47,7 +47,6 @@ export default {
   data: () => ({
     slide: 'style',
     lorem: 'Promoción'
-
   }),
 }
 </script>
