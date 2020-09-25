@@ -13,6 +13,11 @@ class HomeChefServiceImpl implements HomeChefService
     public function get(Request $request)
     {
         $homeChefs = HomeChef::where('active', true);
+        if( $request->lat && $request->lng){
+            $location = (object)  array('latitude' =>  $request->lat, 'longitude' => $request->lng);
+            $homeChefs->closeTo($location, 5);
+        }
+
         if($request->has('cuisine_types')){
             $homeChefs->whereHas('cuisineTypes', function (Builder $query) use ($request) {
                 $query->whereIn('cuisine_type_id', $request->cuisine_types);
@@ -23,6 +28,7 @@ class HomeChefServiceImpl implements HomeChefService
             $homeChefs->where('name','ilike' , '%' . $request->homechef_name . '%');
         }
 
-        return response($homeChefs->with('cuisineTypes')->paginate(10), 200);
+
+        return response($homeChefs->with('cuisineTypes')->paginate(9), 200);
     }
 }

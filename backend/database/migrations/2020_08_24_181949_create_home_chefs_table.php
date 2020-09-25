@@ -26,6 +26,8 @@ class CreateHomeChefsTable extends Migration
             $table->string('facebook_url')->nullable();
             $table->string('website_url')->nullable();
             $table->string('slug')->unique();
+            $table->decimal('lat', 10, 8);
+            $table->decimal('lng', 11, 8);
             $table->timestamps();
         });
     }
