@@ -143,7 +143,14 @@ export default {
       return this.$store.state.location.route + ' ' + this.$store.state.location.locality;
     },
     searchParams: function (){
-      return {"cuisine_types": this.selectedCuisineTypes, "homechef_name" : this.search, page: this.selectedPage};
+      console.log('searchParams');
+      console.log(this.$store.state.location);
+      return {
+        "cuisine_types": this.selectedCuisineTypes,
+        "homechef_name" : this.search, "page": this.selectedPage,
+        "lat": this.$store.state.location.latitude,
+        "lng": this.$store.state.location.longitude
+      };
     },
     chefsUrl: function (){
       return "api/chefs";
