@@ -5,7 +5,6 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import createStore from './store'
 
-
 Vue.config.productionTip = false;
 //axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.baseURL = "https://api.sivarfood.siliconsivar.com/";
