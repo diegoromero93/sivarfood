@@ -3,8 +3,8 @@
     <div class="container">
       <div id="logo">
         <a href="index.html">
-          <img v-if="home"  src="assets/img/logo.svg" width="140" height="35" alt="" class="logo_normal">
-          <img src="assets/img/logo_sticky.svg" width="140" height="35" alt="" class="logo_sticky">
+          <img v-if="home"  src="assets/img/logo.svg" height="100" alt="" class="logo_normal" style="filter: invert(98%) sepia(90%) saturate(1%) hue-rotate(228deg) brightness(110%) contrast(97%);">
+          <img src="assets/img/logo_sticky.svg" height="100" alt="" class="logo_sticky">
         </a>
       </div>
 
@@ -39,7 +39,6 @@
             </ul>
           </li>
           <li><a href="submit-restaurant.html">Submit</a></li>
-          <li><a href="#0">Buy this template</a></li>
         </ul>
       </nav>
     </div>

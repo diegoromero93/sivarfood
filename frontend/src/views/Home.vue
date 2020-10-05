@@ -5,7 +5,7 @@
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-xl-9 col-lg-10 col-md-8">
-              <p>De los mejores emprendedores de Sivar</p>
+              <p>Buscamos las mejores recetas, aquellas que cuentan una historia.</p>
               <div class="row no-gutters custom-search-input">
                 <div class="col-lg-4">
                   <div class="form-group">
